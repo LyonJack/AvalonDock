@@ -39,5 +39,3 @@ using System;
 
 
 [assembly: XmlnsDefinition("https://github.com/Dirkster99/AvalonDock", "AvalonDock.Themes")]
-[assembly: XmlnsPrefix("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "AvalonDock.Themes")]
-[assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "AvalonDock.Themes")]

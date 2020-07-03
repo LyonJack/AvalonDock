@@ -19,7 +19,6 @@ using System.Diagnostics;
 using System.IO;
 using AvalonDock.Layout.Serialization;
 using AvalonDock;
-using System.Diagnostics.CodeAnalysis;
 
 namespace TestApp
 {
@@ -128,8 +127,7 @@ namespace TestApp
 			}
 		}
 
-        [SuppressMessage("Style", "IDE0063:使用简单的 \"using\" 语句", Justification = "<挂起>")]
-        private void OnLoadLayout(object sender, RoutedEventArgs e)
+		private void OnLoadLayout(object sender, RoutedEventArgs e)
 		{
 			var currentContentsList = dockManager.Layout.Descendents().OfType<LayoutContent>().Where(c => c.ContentId != null).ToArray();
 
@@ -145,7 +143,6 @@ namespace TestApp
 				serializer.Deserialize(stream);
 		}
 
-		[SuppressMessage("Style", "IDE0063:使用简单的 \"using\" 语句", Justification = "<挂起>")]
 		private void OnSaveLayout(object sender, RoutedEventArgs e)
 		{
 			string fileName = (sender as MenuItem).Header.ToString();
@@ -170,17 +167,13 @@ namespace TestApp
 			var firstDocumentPane = dockManager.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
 			if (firstDocumentPane != null)
 			{
-                LayoutDocument doc = new LayoutDocument
-                {
-                    Title = "Test1"
-                };
-                firstDocumentPane.Children.Add(doc);
+				LayoutDocument doc = new LayoutDocument();
+				doc.Title = "Test1";
+				firstDocumentPane.Children.Add(doc);
 
-                LayoutDocument doc2 = new LayoutDocument
-                {
-                    Title = "Test2"
-                };
-                firstDocumentPane.Children.Add(doc2);
+				LayoutDocument doc2 = new LayoutDocument();
+				doc2.Title = "Test2";
+				firstDocumentPane.Children.Add(doc2);
 			}
 
 			var leftAnchorGroup = dockManager.Layout.LeftSide.Children.FirstOrDefault();
@@ -205,7 +198,7 @@ namespace TestApp
 				toolWindow1.AddToLayout(dockManager, AnchorableShowStrategy.Bottom | AnchorableShowStrategy.Most);
 		}
 
-		private void DockManager_DocumentClosing(object sender, DocumentClosingEventArgs e)
+		private void dockManager_DocumentClosing(object sender, DocumentClosingEventArgs e)
 		{
 			if (MessageBox.Show("Are you sure you want to close the document?", "AvalonDock Sample", MessageBoxButton.YesNo) == MessageBoxResult.No)
 				e.Cancel = true;

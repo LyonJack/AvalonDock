@@ -69,7 +69,7 @@ namespace AvalonDock.Controls
 		protected override void OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
 		{
 			base.OnMouseLeftButtonDown(e);
-			if (!e.Handled && _model.SelectedContent != null && !_model.SelectedContent.IsActive)
+			if (!e.Handled && _model.SelectedContent != null)
 				_model.SelectedContent.IsActive = true;
 		}
 

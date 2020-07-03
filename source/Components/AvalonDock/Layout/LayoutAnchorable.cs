@@ -485,11 +485,9 @@ namespace AvalonDock.Layout
 						case AnchorSide.Bottom:
 							if (parentGroup.Root.RootPanel.Orientation == Orientation.Vertical)
 							{
-                                previousContainer = new LayoutAnchorablePane
-                                {
-                                    DockMinHeight = AutoHideMinHeight
-                                };
-                                parentGroup.Root.RootPanel.Children.Add(previousContainer);
+								previousContainer = new LayoutAnchorablePane();
+								previousContainer.DockMinHeight = AutoHideMinHeight;
+								parentGroup.Root.RootPanel.Children.Add(previousContainer);
 							}
 							else
 							{

@@ -116,10 +116,11 @@
 					// Save session data and close application
 					OnClosed(_appVM, _mainWindow);
 
-                    if (_appVM is IDisposable dispose)
-                        dispose.Dispose();
+					var dispose = _appVM as IDisposable;
+					if (dispose != null)
+						dispose.Dispose();
 
-                    _mainWindow.DataContext = null;
+					_mainWindow.DataContext = null;
  				};
 
 				MainWindow.Show();
@@ -164,13 +165,14 @@
 				Application.Current.MainWindow = _mainWindow;
 				_mainWindow.DataContext = _appVM;
 
-                // Establish command binding to accept user input via commanding framework
-                // workSpace.InitCommandBinding(win);
+				// Establish command binding to accept user input via commanding framework
+				// workSpace.InitCommandBinding(win);
 
-                settings.SessionData.WindowPosSz.TryGetValue(settings.SessionData.MainWindowName
-                                                           , out ViewPosSizeModel viewSz);
+				ViewPosSizeModel viewSz;
+				settings.SessionData.WindowPosSz.TryGetValue(settings.SessionData.MainWindowName
+														   , out viewSz);
 
-                viewSz.SetWindowsState(win);
+				viewSz.SetWindowsState(win);
 
 				string lastActiveFile = settings.SessionData.LastActiveSolution;
 
@@ -191,33 +193,37 @@
 		{
 			try
 			{
-                if (base.MainWindow.DataContext is AppViewModel wsVM)
-                {
-                    if (MainWindow is IMetroWindow MainWindowCanClose)
-                    {
-                        if (MainWindowCanClose.IsContentDialogVisible == true)
-                        {
-                            e.Cancel = true;     // Lets not close with open dialog
-                            return;
-                        }
-                    }
+				AppViewModel wsVM = base.MainWindow.DataContext as AppViewModel;
 
-                    // Close all open files and check whether application is ready to close
-                    if (wsVM.AppLifeCycle.Exit_CheckConditions(wsVM) == true)
-                    {
-                        // (other than exception and error handling)
-                        wsVM.AppLifeCycle.OnRequestClose(true);
+				if (wsVM != null)
+				{
+					var MainWindowCanClose = MainWindow as IMetroWindow;
 
-                        _mainWindow.OnSaveLayout();
-                        e.Cancel = false;
-                    }
-                    else
-                    {
-                        wsVM.AppLifeCycle.CancelShutDown();
-                        e.Cancel = true;
-                    }
-                }
-            }
+					if (MainWindowCanClose != null)
+					{
+						if (MainWindowCanClose.IsContentDialogVisible == true)
+						{
+							e.Cancel = true;     // Lets not close with open dialog
+							return;
+						}
+					}
+
+					// Close all open files and check whether application is ready to close
+					if (wsVM.AppLifeCycle.Exit_CheckConditions(wsVM) == true)
+					{
+						// (other than exception and error handling)
+						wsVM.AppLifeCycle.OnRequestClose(true);
+
+						_mainWindow.OnSaveLayout();
+						e.Cancel = false;
+					}
+					else
+					{
+						wsVM.AppLifeCycle.CancelShutDown();
+						e.Cancel = true;
+					}
+				}
+			}
 			catch (Exception exp)
 			{
 				Debug.WriteLine(exp);
@@ -235,9 +241,10 @@
 			{
 				var settings = GetService<ISettingsManager>();
 
-                settings.SessionData.WindowPosSz.TryGetValue(settings.SessionData.MainWindowName
-                                                           , out ViewPosSizeModel viewSz);
-                viewSz.GetWindowsState(win);
+				ViewPosSizeModel viewSz;
+				settings.SessionData.WindowPosSz.TryGetValue(settings.SessionData.MainWindowName
+														   , out viewSz);
+				viewSz.GetWindowsState(win);
 
 				_appVM.GetSessionData(settings.SessionData);
 

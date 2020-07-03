@@ -100,13 +100,13 @@ namespace AvalonDock
 		[StructLayout(LayoutKind.Sequential)]
 		internal class WINDOWPOS
 		{
-			public IntPtr Hwnd;
-			public IntPtr HwndInsertAfter;
-			public int X;
-			public int Y;
-			public int Cx;
-			public int Cy;
-			public int Flags;
+			public IntPtr hwnd;
+			public IntPtr hwndInsertAfter;
+			public int x;
+			public int y;
+			public int cx;
+			public int cy;
+			public int flags;
 		};
 
 		[DllImport("user32.dll")]
@@ -285,13 +285,15 @@ namespace AvalonDock
 
 		internal static RECT GetClientRect(IntPtr hWnd)
 		{
-			GetClientRect(hWnd, out RECT result);
+			RECT result = new RECT();
+			GetClientRect(hWnd, out result);
 			return result;
 		}
 
 		internal static RECT GetWindowRect(IntPtr hWnd)
 		{
-			GetWindowRect(hWnd, out RECT result);
+			RECT result = new RECT();
+			GetWindowRect(hWnd, out result);
 			return result;
 		}
 

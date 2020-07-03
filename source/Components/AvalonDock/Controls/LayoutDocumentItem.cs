@@ -69,7 +69,7 @@ namespace AvalonDock.Controls
 		{
 			if (_document.Root?.Manager == null) return;
 			var dockingManager = _document.Root.Manager;
-			dockingManager.ExecuteCloseCommand(_document);
+			dockingManager._ExecuteCloseCommand(_document);
 		}
 
 		/// <inheritdoc />

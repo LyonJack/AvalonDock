@@ -98,7 +98,7 @@ namespace AvalonDock.Layout
 			if (Root?.Manager != null)
 			{
 				var dockingManager = Root.Manager;
-				dockingManager.ExecuteCloseCommand(this);
+				dockingManager._ExecuteCloseCommand(this);
 			}
 			else
 				CloseDocument();

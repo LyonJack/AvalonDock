@@ -48,7 +48,7 @@ namespace Microsoft.Windows.Shell
 		private bool _isFixedUp = false;
 		private bool _isUserResizing = false;
 		private bool _hasUserMovedWindow = false;
-		private Point _windowPosAtStartOfUserMove = default;
+		private Point _windowPosAtStartOfUserMove = default(Point);
 
 		// Field to track attempts to force off Device Bitmaps on Win7.
 		private int _blackGlassFixupAttemptCount;
@@ -415,13 +415,6 @@ namespace Microsoft.Windows.Shell
 			// Since we always want the client size to equal the window size, we can unconditionally handle it
 			// without having to modify the parameters.
 			handled = true;
-			if (wParam != IntPtr.Zero)
-			{
-				var client = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT));
-				client.Bottom++;
-				Marshal.StructureToPtr(client, lParam, false);
-				return IntPtr.Zero;
-			}
 			return new IntPtr((int)WVR.REDRAW);
 		}
 
@@ -431,7 +424,7 @@ namespace Microsoft.Windows.Shell
 			handled = false;
 
 			// Give DWM a chance at this first.
-			if (Utility.IsOSVistaOrNewer && _chromeInfo.GlassFrameThickness != default && _isGlassEnabled)
+			if (Utility.IsOSVistaOrNewer && _chromeInfo.GlassFrameThickness != default(Thickness) && _isGlassEnabled)
 			{
 				// If we're on Vista, give the DWM a chance to handle the message first.
 				handled = NativeMethods.DwmDefWindowProc(_hwnd, uMsg, wParam, lParam, out lRet);
@@ -693,7 +686,7 @@ namespace Microsoft.Windows.Shell
 			var frameState = NativeMethods.DwmIsCompositionEnabled();
 
 			if (!force && frameState == _isGlassEnabled) return;
-			_isGlassEnabled = frameState && _chromeInfo.GlassFrameThickness != default;
+			_isGlassEnabled = frameState && _chromeInfo.GlassFrameThickness != default(Thickness);
 
 			if (_isGlassEnabled)
 			{
